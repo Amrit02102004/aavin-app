@@ -1,0 +1,56 @@
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.global-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+}
+
+form {
+  padding-top: 10px;
+  font-size: 14px;
+  margin-top: 30px;
+  position: relative;
+  height: 100%;
+}
+
+.card-title {
+  font-weight: 300;
+}
+
+.profile-btn{
+  font-size: 14px;
+  margin-top: 50px;
+  position: absolute;
+  bottom: -47px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.edit-form {
+  width: 70%;
+  height: 60vh;
+  background-color: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+label{
+  font-weight: bold;
+  margin-top: 10px;
+}
+.sign-up {
+  text-align: center;
+  padding: 20px 0 0;
+}
+
+.alert {
+  margin-bottom: -30px;
+  font-size: 13px;
+  margin-top: 20px;
+}

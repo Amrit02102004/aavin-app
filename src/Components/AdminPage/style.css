@@ -1,0 +1,84 @@
+.user-box {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 75%;
+    margin: 0 auto;
+}
+
+.user-box.expanded {
+    background-color: #e9ecef;
+}
+
+.user-box .user-header {
+    cursor: pointer;
+    border-radius: 10px;
+}
+
+.user-box.expanded .user-header{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.user-box .user-header {
+    background-color: rgba(48, 45, 45, 0.449);
+}
+
+.user-box .user-items {
+    display: none;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid rgba(48, 45, 45, 0.449);
+}
+
+.user-box.expanded .user-items {
+    display: block;
+}
+
+.user-box .items-container {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+}
+
+.user-box.expanded .items-container {
+    opacity: 1;
+}
+
+/* Additional styles for item name and responsive layout */
+.receipt-item {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0.5rem;
+}
+
+.receipt-item .col-8 {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+    padding-right: 0.5rem;
+}
+
+.receipt-item .col-8 p {
+    word-wrap: break-word;
+}
+
+@media (max-width: 767px) {
+    .receipt-item .col-8,
+    .receipt-item .col-2,
+    .receipt-item .col-1 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding-right: 0;
+    }
+}
+
+.receipt-item {
+    flex-wrap: wrap;
+}
+
+.receipt-item .btn {
+    flex: 1 0 auto;
+    margin: 0.5rem 0;
+}

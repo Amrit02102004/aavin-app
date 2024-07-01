@@ -1,2 +1,4 @@
-# aavin-app
-Aavin Application
+# React + Vite
+
+npm install
+npm run dev
