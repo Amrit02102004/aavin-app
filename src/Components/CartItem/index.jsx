@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import './style.css';
 import { FaRegTrashAlt } from "react-icons/fa";
 
@@ -24,7 +25,7 @@ const CartItem = ({ productName, price, quantity: initialQuantity, onRemove, onU
     };
 
     const handleQuantityChange = (e) => {
-        const newQuantity = parseInt(e.target.value) || 1;
+        const newQuantity = Math.max(1, parseInt(e.target.value) || 1);
         setQuantity(newQuantity);
         onUpdateQuantity(newQuantity);
     };
@@ -40,10 +41,10 @@ const CartItem = ({ productName, price, quantity: initialQuantity, onRemove, onU
                     <div className="d-flex align-items-center">
                         <div className='quantity-container d-flex align-items-center'>
                             <button onClick={decrementQuantity} className="btn btn-sm btn-outline-secondary">-</button>
-                            <input type="number" value={quantity} className="mx-1 quantity-input" onChange={handleQuantityChange} />
+                            <input type="number" value={quantity} className="mx-1 quantity-input" onChange={handleQuantityChange} min="1" />
                             <button onClick={incrementQuantity} className="btn btn-sm btn-outline-secondary">+</button>
                         </div>
-                        <p className="m-0 ms-2">${price * quantity}</p>
+                        <p className="m-0 ms-2">${(price * quantity).toFixed(2)}</p>
                         <FaRegTrashAlt className='text-danger m-3' onClick={onRemove} />
                     </div>
                 </div>
@@ -52,5 +53,13 @@ const CartItem = ({ productName, price, quantity: initialQuantity, onRemove, onU
         </>
     )
 }
+
+CartItem.propTypes = {
+    productName: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    quantity: PropTypes.number.isRequired,
+    onRemove: PropTypes.func.isRequired,
+    onUpdateQuantity: PropTypes.func.isRequired,
+};
 
 export default CartItem;

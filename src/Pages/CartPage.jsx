@@ -1,52 +1,88 @@
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 import SidebarComponent from '../Components/SideBar'
 import CartComponent from '../Components/Cart'
-// import { getCartItems, removeFromCart, updateCartItemQuantity } from '../drizzle/api'
+import { db } from '../drizzle';
+import { mySchemaCart, mySchemaProducts } from '../drizzle/schema';
+import { eq, and } from 'drizzle-orm';
 
 const CartPage = () => {
-    // const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState([]);
+    const userId = 1; // Assuming user ID is 1
 
-    // useEffect(() => {
-    //     fetchCartItems();
-    // }, []);
+    useEffect(() => {
+        fetchCartItems();
+    }, []);
 
-    // const fetchCartItems = async () => {
-    //     try {
-    //         const items = await getCartItems(1); // Assuming user ID is 1
-    //         setCartItems(items);
-    //     } catch (error) {
-    //         console.error('Error fetching cart items:', error);
-    //     }
-    // };
+    const fetchCartItems = async () => {
+        try {
+            const items = await db.select({
+                cartId: mySchemaCart.product_id,
+                productName: mySchemaProducts.product_name,
+                price: mySchemaProducts.price,
+                quantity: mySchemaCart.quantity,
+                amount: mySchemaCart.amount
+            })
+            .from(mySchemaCart)
+            .innerJoin(mySchemaProducts, eq(mySchemaCart.product_id, mySchemaProducts.id))
+            .where(eq(mySchemaCart.user_id, userId));
 
-    // const handleRemoveFromCart = async (cartId) => {
-    //     try {
-    //         await removeFromCart(cartId);
-    //         setCartItems(cartItems.filter(item => item.cartId !== cartId));
-    //     } catch (error) {
-    //         console.error('Error removing from cart:', error);
-    //     }
-    // };
+            setCartItems(items);
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
+        }
+    };
 
-    // const handleUpdateQuantity = async (cartId, newQuantity) => {
-    //     try {
-    //         await updateCartItemQuantity(cartId, newQuantity);
-    //         setCartItems(cartItems.map(item => 
-    //             item.cartId === cartId ? {...item, quantity: newQuantity} : item
-    //         ));
-    //     } catch (error) {
-    //         console.error('Error updating quantity:', error);
-    //     }
-    // };
+    const handleRemoveFromCart = async (cartId) => {
+        try {
+            await db.delete(mySchemaCart)
+                .where(and(
+                    eq(mySchemaCart.product_id, cartId),
+                    eq(mySchemaCart.user_id, userId)
+                ));
+            setCartItems(cartItems.filter(item => item.cartId !== cartId));
+        } catch (error) {
+            console.error('Error removing from cart:', error);
+        }
+    };
+
+    const handleUpdateQuantity = async (cartId, newQuantity) => {
+        try {
+            const product = await db.select()
+                .from(mySchemaProducts)
+                .where(eq(mySchemaProducts.id, cartId))
+                .limit(1);
+
+            if (product.length > 0) {
+                const newAmount = parseFloat(product[0].price) * newQuantity;
+                await db.update(mySchemaCart)
+                    .set({ 
+                        quantity: newQuantity, 
+                        amount: newAmount.toFixed(2) 
+                    })
+                    .where(and(
+                        eq(mySchemaCart.product_id, cartId),
+                        eq(mySchemaCart.user_id, userId)
+                    ));
+
+                setCartItems(cartItems.map(item => 
+                    item.cartId === cartId 
+                        ? {...item, quantity: newQuantity, amount: newAmount.toFixed(2)} 
+                        : item
+                ));
+            }
+        } catch (error) {
+            console.error('Error updating quantity:', error);
+        }
+    };
 
     return (
         <>
             <SidebarComponent>
-                {/* <CartComponent 
+                <CartComponent 
                     items={cartItems}
                     onRemoveFromCart={handleRemoveFromCart}
                     onUpdateQuantity={handleUpdateQuantity}
-                />*/}
+                />
             </SidebarComponent>
         </>
     )

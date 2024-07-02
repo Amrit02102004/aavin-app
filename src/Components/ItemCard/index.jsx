@@ -1,17 +1,20 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 import './style.css'
 
-const ItemCard = ({ itemName, itemPrice, isAddedToCart }) => {
-    const [quantity, setQuantity] = useState(0);
+const ItemCard = ({ itemName, itemPrice, isAddedToCart, onAddToCart }) => {
+    const [quantity, setQuantity] = useState(1);
 
     const incrementQuantity = () => {
-        setQuantity(quantity + 1);
+        setQuantity(prevQuantity => prevQuantity + 1);
     };
 
     const decrementQuantity = () => {
-        if (quantity > 0) {
-            setQuantity(quantity - 1);
-        }
+        setQuantity(prevQuantity => Math.max(1, prevQuantity - 1));
+    };
+
+    const handleAddToCart = () => {
+        onAddToCart(quantity);
     };
 
     return (
@@ -24,7 +27,13 @@ const ItemCard = ({ itemName, itemPrice, isAddedToCart }) => {
                             <h4 className="card-title m-0 p-0">{itemName}</h4>
                             <div className='quantity-container d-flex align-items-center'>
                                 <button onClick={decrementQuantity} className="btn btn-sm btn-outline-secondary">-</button>
-                                <input type="number" value={quantity} className="mx-1 quantity-input" onChange={(e) => setQuantity(e.target.value)} />
+                                <input 
+                                    type="number" 
+                                    value={quantity} 
+                                    className="mx-1 quantity-input" 
+                                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))} 
+                                    min="1"
+                                />
                                 <button onClick={incrementQuantity} className="btn btn-sm btn-outline-secondary">+</button>
                             </div>
                         </div>
@@ -34,15 +43,25 @@ const ItemCard = ({ itemName, itemPrice, isAddedToCart }) => {
                             <p className="price-text m-0">{itemPrice}</p>
                         </div>
                         <div className="col-8">
-                            <a href="#" className="btn btn-primary add-to-cart-btn">
-                                {isAddedToCart ? "REMOVE" : "ADD TO CART"}
-                            </a>
+                            <button 
+                                className={`btn ${isAddedToCart ? 'btn-danger' : 'btn-primary'} add-to-cart-btn`}
+                                onClick={handleAddToCart}
+                            >
+                                {isAddedToCart ? "REMOVE FROM CART" : "ADD TO CART"}
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </>
     );
+};
+
+ItemCard.propTypes = {
+    itemName: PropTypes.string.isRequired,
+    itemPrice: PropTypes.string.isRequired,
+    isAddedToCart: PropTypes.bool.isRequired,
+    onAddToCart: PropTypes.func.isRequired
 };
 
 export default ItemCard;
