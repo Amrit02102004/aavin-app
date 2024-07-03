@@ -18,6 +18,7 @@ const CartPage = () => {
             const items = await db.select({
                 cartId: mySchemaCart.product_id,
                 productName: mySchemaProducts.product_name,
+                image_url: mySchemaProducts.image_url,
                 price: mySchemaProducts.price,
                 quantity: mySchemaCart.quantity,
                 amount: mySchemaCart.amount

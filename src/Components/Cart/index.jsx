@@ -20,6 +20,7 @@ const CartComponent = ({ items, onRemoveFromCart, onUpdateQuantity }) => {
               <CartItem 
                 key={item.cartId}
                 productName={item.productName}
+                itemImage={item.image_url}
                 price={parseFloat(item.price)}
                 quantity={item.quantity}
                 onRemove={() => onRemoveFromCart(item.cartId)}

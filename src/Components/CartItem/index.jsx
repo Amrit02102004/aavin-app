@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './style.css';
 import { FaRegTrashAlt } from "react-icons/fa";
 
-const CartItem = ({ productName, price, quantity: initialQuantity, onRemove, onUpdateQuantity }) => {
+const CartItem = ({ productName, itemImage, price, quantity: initialQuantity, onRemove, onUpdateQuantity }) => {
     const [quantity, setQuantity] = useState(initialQuantity);
 
     useEffect(() => {
@@ -34,7 +34,7 @@ const CartItem = ({ productName, price, quantity: initialQuantity, onRemove, onU
         <>
             <div className="cartItem row align-items-center">
                 <div className="col-3 mb-2">
-                    <img className="w-100" src="https://codingyaar.com/wp-content/uploads/bag-scaled.jpg" alt="product image" />
+                    <img className="w-100" src={`/images/${itemImage}`} alt="product image" />
                 </div>
                 <div className="col-9 d-flex justify-content-between align-items-center">
                     <h6 className="m-0">{productName}</h6>
