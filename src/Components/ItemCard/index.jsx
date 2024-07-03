@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import './style.css'
 
-const ItemCard = ({ itemName, itemPrice, isAddedToCart, quantity: initialQuantity, onAddToCart, onRemoveFromCart }) => {
+const ItemCard = ({ itemName, itemImage, itemPrice, isAddedToCart, quantity: initialQuantity, onAddToCart, onRemoveFromCart }) => {
     const [quantity, setQuantity] = useState(initialQuantity);
 
     useEffect(() => {
@@ -32,7 +32,7 @@ const ItemCard = ({ itemName, itemPrice, isAddedToCart, quantity: initialQuantit
         <>
             <div className="m-4">
                 <div className="card border-0 rounded-0 shadow card-width">
-                    <img src="https://codingyaar.com/wp-content/uploads/bag-scaled.jpg" className="card-img-top rounded-0" alt="..." />
+                    <img src={`/images/${itemImage}`} className="card-img-top rounded-0" alt="..." />
                     <div className="card-body mt-3 mb-3">
                         <div className="d-flex justify-content-between align-items-center">
                             <h4 className="card-title m-0 p-0">{itemName}</h4>

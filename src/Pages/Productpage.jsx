@@ -85,6 +85,7 @@ const Productpage = () => {
                             <ItemCard 
                                 key={product.id}
                                 itemName={product.product_name}
+                                itemImage={product.image_url}
                                 itemPrice={parseFloat(product.price)}
                                 isAddedToCart={!!cartItem}
                                 quantity={cartItem ? cartItem.quantity : 1}

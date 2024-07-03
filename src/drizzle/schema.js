@@ -14,6 +14,7 @@ export const mySchemaUsers = pgTable('users', {
 export const mySchemaProducts = pgTable('products', {
   id: serial('id').primaryKey(),
   product_name: varchar('product_name').notNull(),
+  image_url: varchar('image_url'),
   price: numeric('price').notNull(),
   available_quantity: integer('available_quantity').notNull(),
 });
