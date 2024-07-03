@@ -14,6 +14,7 @@ const CartComponent = ({ items, onRemoveFromCart, onUpdateQuantity }) => {
       <h1 className="text-center">Your Cart</h1>
       <div className="container-fluid">
         <div className="row align-items-start">
+          {items.length === 0 && <div className="col-12">Your cart is empty</div>}
           <div className="col-12 col-sm-8 items">
             {items.map(item => (
               <CartItem 

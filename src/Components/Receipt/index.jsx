@@ -3,7 +3,7 @@ import "./receipt.css"
 import html2pdf from 'html2pdf.js';
 import logo from "./logo.png";
 
-const receipt = () => {
+const receipt = ({items}) => {
 
     const handleDownload = () => {
         const element = document.getElementById('invoice-POS');
@@ -15,6 +15,10 @@ const receipt = () => {
           jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
         });
       };
+
+      const total = (items.reduce((sum, item) => sum + parseFloat(item.price) * item.quantity, 0)).toFixed(2);
+
+      const tax = (total * 0.05).toFixed(2);
 
   return (
     <>
@@ -54,40 +58,24 @@ const receipt = () => {
             </tr>
           </thead>
           <tbody>
+          {items.map(item => (
+
             <tr>
-              <td>Communication</td>
-              <td>5</td>
-              <td>$375.00</td>
+              <td>{item.productName}</td>
+              <td>{item.quantity}</td>
+              <td>$ {(parseFloat(item.price) * (item.quantity)).toFixed(2)}</td>
             </tr>
-            <tr>
-              <td>Asset Gathering</td>
-              <td>3</td>
-              <td>$225.00</td>
-            </tr>
-            <tr>
-              <td>Design Development</td>
-              <td>5</td>
-              <td>$375.00</td>
-            </tr>
-            <tr>
-              <td>Animation</td>
-              <td>20</td>
-              <td>$1500.00</td>
-            </tr>
-            <tr>
-              <td>Animation Revisions</td>
-              <td>10</td>
-              <td>$750.00</td>
+            ))}
+            
+            <tr className="table-light">
+              <td></td>
+              <td><b>Tax (5%)</b></td>
+              <td>$ {tax}</td>
             </tr>
             <tr className="table-light">
               <td></td>
-              <td>tax</td>
-              <td>$419.25</td>
-            </tr>
-            <tr className="table-light">
-              <td></td>
-              <td>Total</td>
-              <td>$3,644.25</td>
+              <td><b>Total</b></td>
+              <td>$ {parseFloat(total) + parseFloat(tax)}</td>
             </tr>
           </tbody>
         </table>

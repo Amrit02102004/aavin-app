@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './style.css';
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -45,7 +45,7 @@ const CartItem = ({ productName, price, quantity: initialQuantity, onRemove, onU
                             <button onClick={incrementQuantity} className="btn btn-sm btn-outline-secondary">+</button>
                         </div>
                         <p className="m-0 ms-2">${(price * quantity).toFixed(2)}</p>
-                        <FaRegTrashAlt className='text-danger m-3' onClick={onRemove} />
+                        <FaRegTrashAlt className='text-danger m-3 trash-icon' onClick={onRemove} />
                     </div>
                 </div>
             </div>

@@ -1,4 +1,3 @@
-/* stasysiia.com */
 @import url("https://fonts.googleapis.com/css2?family=Exo&display=swap");
 
 #cart {
@@ -108,7 +107,6 @@ h4 {
     padding-top: 16px;
 }
 
-/* yukito bloody */
 .back {
     position: relative;
     top: -30px;
@@ -191,11 +189,6 @@ h4 {
     padding-left: 15px;
 }
 
-.quantity-input {
-    width: 50px;
-    text-align: center;
-}
-
 .quantity-container {
     display: flex;
     align-items: center;
@@ -210,7 +203,14 @@ h4 {
 }
 
 .quantity-input {
-    width: 50px;
+    width: 30px;
     text-align: center;
 }
 /* ... */
+
+.trash-icon:hover {
+    color: red;
+    cursor: pointer;
+    font-size: large;
+    transition: 1ms ease-in-out;
+}
