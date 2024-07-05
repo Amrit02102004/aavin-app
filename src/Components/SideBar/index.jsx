@@ -21,7 +21,7 @@ const SidebarComponent = ({ children }) => {
             <a href="#">Brand_Name</a>
           </li>
           <li>
-            <a href="/">Dashboard</a>
+            <a href="/home">Dashboard</a>
           </li>
           <li>
           <Link to="/products">Products</Link>

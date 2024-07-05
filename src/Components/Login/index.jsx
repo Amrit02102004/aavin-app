@@ -56,7 +56,7 @@ function SignIn() {
 
             ls.set('authToken', token);
 
-            navigate('/dashboard');
+            navigate('/home');
         } catch (error) {
             console.error('Login failed:', error);
             setShowAlert(true);
