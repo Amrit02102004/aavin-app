@@ -29,15 +29,7 @@ const SidebarComponent = ({ children }) => {
           <li>
             <a href="#">My Orders</a>
           </li>
-          <li>
-            <a href="#">Payments</a>
-          </li>
-          <li>
-            <a href="#">Transactions</a>
-          </li>
-          <li>
-            <a href="#">Settings</a>
-          </li>
+          
         </ul>
       </div>
       <div id="page-content-wrapper">{children}</div>
