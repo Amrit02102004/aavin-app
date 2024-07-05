@@ -1,5 +1,4 @@
-import { integer, pgTable, serial, varchar, numeric } from 'drizzle-orm/pg-core';
-
+import { integer, pgTable, serial, varchar, numeric , boolean} from 'drizzle-orm/pg-core';
 export const mySchemaUsers = pgTable('users', {
   id: serial('id').primaryKey(),
   full_name: varchar('full_name').notNull(),
@@ -9,6 +8,7 @@ export const mySchemaUsers = pgTable('users', {
   email: varchar('email').notNull().unique(),
   gstin: varchar('gstin'),
   password: varchar('password').notNull(),
+  isAdmin : boolean('isAdmin').default(false)
 });
 
 export const mySchemaProducts = pgTable('products', {
