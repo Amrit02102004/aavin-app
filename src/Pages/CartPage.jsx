@@ -1,16 +1,21 @@
-import  { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SidebarComponent from '../Components/SideBar'
 import CartComponent from '../Components/Cart'
 import { db } from '../drizzle';
 import { mySchemaCart, mySchemaProducts } from '../drizzle/schema';
 import { eq, and } from 'drizzle-orm';
+import { getUserIdFromToken } from '../Components/tokenutils';
 
 const CartPage = () => {
     const [cartItems, setCartItems] = useState([]);
-    const userId = 1; // Assuming user ID is 1
-
+    const [userId, setUserId] = useState(null);
+   
     useEffect(() => {
-        fetchCartItems();
+        const fetchUserId = async () => {
+            const id = await getUserIdFromToken();
+            setUserId(id);
+        };
+        fetchUserId();
     }, []);
 
     const fetchCartItems = async () => {
@@ -26,12 +31,19 @@ const CartPage = () => {
             .from(mySchemaCart)
             .innerJoin(mySchemaProducts, eq(mySchemaCart.product_id, mySchemaProducts.id))
             .where(eq(mySchemaCart.user_id, userId));
-
+            console.log("Fetchin Cart");
             setCartItems(items);
         } catch (error) {
             console.error('Error fetching cart items:', error);
         }
     };
+    
+    
+    useEffect(() => {
+        if(userId) {
+            fetchCartItems();
+        }
+    }, [userId]);
 
     const handleRemoveFromCart = async (cartId) => {
         try {

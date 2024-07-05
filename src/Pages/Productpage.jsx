@@ -4,26 +4,32 @@ import SidebarComponent from '../Components/SideBar'
 import { db } from '../drizzle';
 import { mySchemaProducts, mySchemaCart } from '../drizzle/schema';
 import { eq, and } from 'drizzle-orm';
+import { getUserIdFromToken } from '../Components/tokenutils';
 
 const Productpage = () => {
+    const fetchUserId = async () => {
+        const id = await getUserIdFromToken();
+        setUserId(id);
+      };
     const [products, setProducts] = useState([]);
     const [cartItems, setCartItems] = useState([]);
-    const userId = 1; // Assuming user ID is 1
+    const [userId, setUserId] = useState(fetchUserId());
 
     const fetchProducts = async () => {
         const res = await db.select().from(mySchemaProducts);
         setProducts(res);
     }
-
     const fetchCartItems = async () => {
+        
         const res = await db.select().from(mySchemaCart).where(eq(mySchemaCart.user_id, userId));
+        console.log(res);
         setCartItems(res);
     }
-
+    
     useEffect(() => {
         fetchProducts();
         fetchCartItems();
-    }, []);
+    }, [userId]);
 
     const handleAddToCart = async (productId, quantity) => {
         const product = products.find(p => p.id === productId);
