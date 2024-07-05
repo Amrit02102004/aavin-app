@@ -31,7 +31,7 @@ const ItemCard = ({ itemName, itemImage, itemPrice, isAddedToCart, quantity: ini
     return (
         <>
             <div className="m-4">
-                <div className="card border-0 rounded-0 shadow card-width">
+                <div className="card border-0 rounded-0 shadow card-width" style={{ height: '375px', width: '300px', objectFit: 'cover' }}>
                     <img src={`/images/${itemImage}`} className="card-img-top rounded-0" style={{ height: '200px', width: 'auto', objectFit: 'cover' }}  alt="..." />
                     <div className="card-body mt-3 mb-3">
                         <div className="d-flex justify-content-between align-items-center">
