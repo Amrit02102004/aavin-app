@@ -13,16 +13,19 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.9.4",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
     "dotenv": "^16.4.5",
     "drizzle-orm": "^0.31.2",
     "html2pdf.js": "^0.10.1",
+    "jose": "^5.6.3",
     "pg": "^8.12.0",
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.2.1",
     "react-router-dom": "^6.24.0",
+    "secure-ls": "^2.0.0",
     "web-vitals": "^4.2.1"
   },
   "devDependencies": {

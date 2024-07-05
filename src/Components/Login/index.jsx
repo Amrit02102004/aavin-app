@@ -1,16 +1,67 @@
 import React, { useState } from 'react';
-import './style.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { db } from '../../drizzle/index';
+import { mySchemaUsers } from '../../drizzle/schema';
+import bcrypt from 'bcryptjs';
+import { SignJWT } from 'jose';
+import SecureLS from 'secure-ls';
+import { eq } from 'drizzle-orm';
+import './style.css';
 
-function Login() {
+const ls = new SecureLS({ encodingType: 'aes' });
+
+function SignIn() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showAlert, setShowAlert] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
 
-    const handleSubmit = (e) => {
+    const navigate = useNavigate();
+
+    const generateToken = async (payload) => {
+        const secret = new TextEncoder().encode(import.meta.env.VITE_JWT_SECRET);
+        const alg = 'HS256';
+
+        const jwt = await new SignJWT(payload)
+            .setProtectedHeader({ alg })
+            .setIssuedAt()
+            .setExpirationTime('2y')
+            .sign(secret);
+
+        return jwt;
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        //TODO : Add Login Backend API
-        setShowAlert(true);
+        try {
+            const users = await db.select().from(mySchemaUsers).where(eq(mySchemaUsers.email, email));
+
+            if (users.length === 0) {
+                setShowAlert(true);
+                setAlertMessage('User not found');
+                return;
+            }
+
+            const user = users[0];
+
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+
+            if (!isPasswordValid) {
+                setShowAlert(true);
+                setAlertMessage('Invalid password');
+                return;
+            }
+
+            const token = await generateToken({ userId: user.id, email: user.email });
+
+            ls.set('authToken', token);
+
+            navigate('/dashboard');
+        } catch (error) {
+            console.error('Login failed:', error);
+            setShowAlert(true);
+            setAlertMessage('Login failed. Please try again.');
+        }
     };
 
     return (
@@ -21,41 +72,43 @@ function Login() {
                     <div className="card-text">
                         {showAlert && (
                             <div className="alert alert-danger alert-dismissible fade show" role="alert">
-                                Incorrect username or password.
+                                {alertMessage}
                             </div>
                         )}
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label htmlFor="exampleInputEmail1">Email address</label>
+                                <label htmlFor="email">Email address</label>
                                 <input
                                     type="email"
                                     className="form-control form-control-sm"
-                                    id="exampleInputEmail1"
+                                    id="email"
                                     aria-describedby="emailHelp"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    required
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="exampleInputPassword1">Password</label>
+                                <label htmlFor="password">Password</label>
                                 <a href="#" style={{ float: 'right', fontSize: '12px' }}>
                                     Forgot password?
                                 </a>
                                 <input
                                     type="password"
                                     className="form-control form-control-sm"
-                                    id="exampleInputPassword1"
+                                    id="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
+                                    required
                                 />
                             </div>
                             <div className="btn-custom">
-                            <button type="submit" className="btn btn-primary btn-block align-btn">
-                                Login
-                            </button>
+                                <button type="submit" className="btn btn-primary btn-block align-btn">
+                                    Login
+                                </button>
                             </div>
                             <div className="sign-up">
-                                Don't have an account? <Link to="/signup">Create One</Link>
+                                Don&apost have an account? <Link to="/signup">Create One</Link>
                             </div>
                         </form>
                     </div>
@@ -65,4 +118,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default SignIn;
